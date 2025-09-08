@@ -4,5 +4,5 @@
     "title": "Token Calculator",
     "description": "Calculate FDV, market cap, and airdrop value for any token.",
     "path": "tools/calculator/"
-  },
+  }
 ]
