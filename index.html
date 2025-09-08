@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tools? Crypto?</title>
+
+  <style>
+    :root{
+      --bg: #0b0c0f;
+      --panel: #101319;
+      --panel-2:#151a22;
+      --text: #e9edf1;
+      --muted:#a8b0bb;
+      --brand:#6ea8ff;
+      --border:#242b36;
+      --maxw: 1200px;
+      --radius: 12px;
+      --shadow: 0 10px 30px rgba(0,0,0,.35);
+      --card-border: color-mix(in oklab, var(--brand) 18%, var(--border));
+      --card-hover: color-mix(in oklab, var(--brand) 30%, var(--border));
+      --btn-bg: linear-gradient(180deg, var(--panel-2), var(--panel));
+    }
+    @media (prefers-color-scheme: light){
+      :root{
+        --bg:#f7f8fb;
+        --panel:#ffffff;
+        --panel-2:#f1f3f7;
+        --text:#0d0f13;
+        --muted:#586171;
+        --brand:#0b63ff;
+        --border:#e3e7ee;
+        --shadow: 0 10px 30px rgba(0,0,0,.06);
+        --card-border:#dfe5ee;
+        --card-hover:#b8cdf9;
+        --btn-bg: linear-gradient(180deg, #fff, #f6f7fb);
+      }
+    }
+
+    *{ box-sizing: border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      line-height:1.55;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 70% -80%, rgba(110,168,255,.12), transparent 50%),
+        var(--bg);
+    }
+    a{ color: inherit; text-decoration: none; }
+
+    .header{
+      max-width: var(--maxw);
+      margin: 0 auto;
+      padding: 26px 16px 8px;
+    }
+    .title{
+      display: flex; align-items: center; gap: 10px;
+      margin: 0 0 4px;
+      font-size: clamp(22px, 3.5vw, 34px);
+      letter-spacing: .2px;
+    }
+    .badge{
+      font-size: 12px; padding: 4px 8px; border-radius: 999px;
+      background: var(--panel-2); border: 1px solid var(--border); color: var(--muted);
+    }
+    .subtitle{ margin: 0; color: var(--muted); }
+
+    .wrap{ max-width: var(--maxw); margin: 16px auto; padding: 0 16px 16px; }
+    .grid{
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 12px;
+    }
+    .card{
+      display: block;
+      padding: 12px 12px;
+      border-radius: var(--radius);
+      background: var(--panel-2);
+      border: 1px solid var(--card-border);
+      box-shadow: var(--shadow);
+      transition: transform .12s ease, border-color .12s ease, box-shadow .12s ease, background .12s ease;
+      min-height: 110px;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: var(--card-hover);
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+      background: color-mix(in oklab, var(--panel-2) 85%, var(--brand) 15%);
+    }
+    .card h3{
+      margin: 0 0 6px;
+      font-size: 16px;
+      line-height: 1.25;
+      word-wrap: break-word;
+      overflow-wrap: anywhere;
+    }
+    .card p{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.35;
+    }
+
+    .bottom{
+      max-width: var(--maxw);
+      margin: 6px auto 28px;
+      padding: 0 16px;
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 10px;
+      align-items: center;
+    }
+    .page-btn, .size-select{
+      border: 1px solid var(--border);
+      background: var(--btn-bg);
+      color: var(--text);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font: inherit;
+      cursor: pointer;
+    }
+    .page-btn:disabled{ opacity:.5; cursor:not-allowed; }
+    .size-wrap{ display:flex; align-items:center; gap:8px; justify-self: end; }
+    .size-label{ font-size: 13px; color: var(--muted); }
+    .size-select{ padding-right: 28px; }
+    .page-numbers{ display: flex; gap: 8px; padding: 6px 0; overflow-x: auto; scrollbar-width: thin; }
+    .page-number{ min-width: 40px; text-align: center; border: 1px solid var(--border); background: var(--btn-bg); color: var(--text); border-radius: 10px; padding: 8px 10px; cursor: pointer; transition: transform .08s ease, border-color .12s ease; }
+    .page-number.active{ border-color: var(--card-hover); transform: translateY(-1px); font-weight: 700; }
+
+    .footer{
+      max-width: var(--maxw);
+      margin: 0 auto 36px;
+      padding: 0 16px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .credit{ color: var(--muted); font-size: 14px; }
+    .tg-btn{
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 10px 14px; border-radius: 999px;
+      background: color-mix(in oklab, var(--brand) 22%, var(--panel-2));
+      border: 1px solid var(--card-hover);
+      color: var(--text);
+      font-weight: 600;
+    }
+    .tg-btn:hover{ transform: translateY(-1px); }
+    .sr{ position:absolute; left:-9999px; width:1px; height:1px; overflow:hidden; }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <h1 class="title">
+      Tools? Crypto?
+      <span id="countBadge" class="badge">0</span>
+    </h1>
+    <p class="subtitle">Tap a card to open the tool.</p>
+  </header>
+
+  <main class="wrap">
+    <div id="grid" class="grid" aria-live="polite"></div>
+  </main>
+
+  <nav class="bottom" aria-label="Pagination and page size">
+    <button id="firstPage" class="page-btn" aria-label="First page">« First</button>
+    <div id="pageNumbers" class="page-numbers" aria-label="Page numbers" tabindex="0"></div>
+    <div class="size-wrap">
+      <span class="size-label">Items per page</span>
+      <select id="pageSize" class="size-select" aria-label="Items per page">
+        <option value="10" selected>10</option>
+        <option value="20">20</option>
+        <option value="30">30</option>
+        <option value="40">40</option>
+        <option value="50">50 (max)</option>
+      </select>
+    </div>
+    <span id="paginationStatus" class="sr"></span>
+  </nav>
+
+  <footer class="footer">
+    <div class="credit">Built by Pratik Sharma</div>
+    <a class="tg-btn" href="https://t.me/ewclairdrops" target="_blank" rel="noopener">
+      <span aria-hidden="true">📣</span> Join Telegram Channel
+    </a>
+  </footer>
+
+  <script>
+    (async function () {
+      const GRID = document.getElementById('grid');
+      const PAGE_NUMBERS = document.getElementById('pageNumbers');
+      const BTN_FIRST = document.getElementById('firstPage');
+      const PAGE_SIZE_SELECT = document.getElementById('pageSize');
+      const COUNT_BADGE = document.getElementById('countBadge');
+      const LIVE_STATUS = document.getElementById('paginationStatus');
+
+      const PAGE_SIZE_MAX = 50;
+      let allItems = [];
+      let currentPage = 1;
+      let pageSize = 10;
+
+      try {
+        const res = await fetch('tools.json', { cache: 'no-store' });
+        allItems = await res.json();
+        allItems.sort((a,b)=> (a.title||a.slug).localeCompare(b.title||b.slug, undefined, {sensitivity:'base'}));
+        COUNT_BADGE.textContent = String(allItems.length);
+      } catch (e) {
+        console.error('Failed to load tools.json', e);
+        GRID.innerHTML = '<p style="color:var(--muted)">Could not load <code>tools.json</code>.</p>';
+        return;
+      }
+
+      function getPageSize(){
+        const n = parseInt(PAGE_SIZE_SELECT.value, 10);
+        return Math.max(1, Math.min(PAGE_SIZE_MAX, n || 10));
+      }
+      function getTotalPages(){
+        return Math.max(1, Math.ceil(allItems.length / pageSize));
+      }
+      function pageSlice(){
+        const start = (currentPage - 1) * pageSize;
+        return allItems.slice(start, start + pageSize);
+      }
+      function escapeHtml(str){
+        return String(str).replace(/[&<>\"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','\"':'&quot;',"'":'&#39;'}[s]));
+      }
+
+      function renderGrid(){
+        const items = pageSlice();
+        GRID.innerHTML = items.map(item => `
+          <a class="card" href="${item.path}" target="_blank" rel="noopener"
+             aria-label="${escapeHtml(item.title || item.slug)} (opens in new tab)">
+            <h3>${escapeHtml(item.title || item.slug)}</h3>
+            <p>${escapeHtml(item.description || '')}</p>
+          </a>
+        `).join('');
+      }
+
+      function renderPagination(){
+        const total = getTotalPages();
+        PAGE_NUMBERS.innerHTML = '';
+        for(let i = 1; i <= total; i++){
+          const btn = document.createElement('button');
+          btn.className = 'page-number' + (i===currentPage ? ' active' : '');
+          btn.textContent = i;
+          btn.addEventListener('click', ()=>{
+            currentPage = i;
+            renderGrid();
+            renderPagination();
+            btn.scrollIntoView({ inline: 'center', block: 'nearest', behavior: 'smooth' });
+            LIVE_STATUS.textContent = `Page ${i} of ${total}`;
+          });
+          PAGE_NUMBERS.appendChild(btn);
+        }
+        BTN_FIRST.disabled = currentPage === 1;
+      }
+
+      function goFirst(){
+        currentPage = 1;
+        update(true);
+      }
+
+      function update(announce){
+        pageSize = getPageSize();
+        const total = getTotalPages();
+        if(currentPage > total) currentPage = total;
+        renderGrid();
+        renderPagination();
+        if(announce) LIVE_STATUS.textContent = `Page ${currentPage} of ${total}`;
+      }
+
+      PAGE_SIZE_SELECT.addEventListener('change', ()=>{ currentPage = 1; update(true); });
+      BTN_FIRST.addEventListener('click', goFirst);
+
+      update(true);
+    })();
+  </script>
+</body>
+</html>
